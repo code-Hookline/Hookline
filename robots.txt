@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://hookline.app/sitemap.xml
+Sitemap: https://hookline.artivicolab.com/sitemap.xml
