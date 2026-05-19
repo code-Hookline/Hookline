@@ -95,18 +95,32 @@
 })();
 
 
-// Wash parallax — the big watercolor blooms (.lp::after) are the most
-// visible background layer. Without this they're bolted to the viewport
-// and read as "stuck" while everything else scrolls. Publish a scroll-
-// driven y-offset as a CSS custom property; CSS applies a translate3d for
-// GPU-cheap motion. Reduced motion = nothing runs, wash stays fixed.
+// Wash parallax — the big watercolor blooms are the most visible background.
+// Tried it as a CSS custom property on .lp::after and Safari refused to
+// repaint the pseudo-element when the variable changed (known issue with
+// var()-driven transforms on pseudo-elements). The robust fix: render the
+// wash as a real <div> and set element.style.transform directly. No
+// indirection, no surprises. Reduced motion keeps the wash but does not
+// move it. The CSS .lp.has-wash::after { display:none } hides the pseudo
+// fallback once this runs so they never both render.
 (function () {
-  if (!document.querySelector('.lp')) return;
+  var host = document.querySelector('.lp');
+  if (!host) return;
+  var wash = document.createElement('div');
+  wash.className = 'lp-wash';
+  wash.setAttribute('aria-hidden', 'true');
+  host.insertBefore(wash, host.firstChild);
+  host.classList.add('has-wash');
+
   var reduce = window.matchMedia &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduce) return;
-  var FACTOR = 0.25, root = document.documentElement, raf = 0, latest = 0;
-  function tick() { raf = 0; root.style.setProperty('--lp-bg-y', (-latest * FACTOR) + 'px'); }
+
+  var FACTOR = 0.3, raf = 0, latest = 0;
+  function tick() {
+    raf = 0;
+    wash.style.transform = 'translate3d(0,' + (-latest * FACTOR) + 'px,0)';
+  }
   addEventListener('scroll', function () {
     latest = window.scrollY || window.pageYOffset || 0;
     if (!raf) raf = requestAnimationFrame(tick);

@@ -547,12 +547,14 @@ html[data-chrome="bw"] .stars i.on { color: var(--ink); }
 }
 /* Watercolor wash — layered, offset pastel blooms with soft irregular
    edges, lightly blurred so they bleed into each other like wet pigment. */
+/* Real-element version: JS injects .lp-wash and sets transform directly on
+   it (Safari-safe). The ::after stays as a no-JS / reduced-motion fallback
+   and is hidden the moment .lp-wash is present so they never both render. */
+.lp.has-wash::after { display: none; }
+.lp-wash,
 .lp::after {
   content: ""; position: fixed; inset: -10vmax; z-index: 0;
   pointer-events: none; filter: blur(60px) saturate(1.05);
-  /* Parallax: JS publishes --lp-bg-y on scroll. translate3d to keep this
-     on a GPU layer so the heavy blur doesn't repaint every frame. */
-  transform: translate3d(0, var(--lp-bg-y, 0), 0);
   will-change: transform;
   background:
     radial-gradient(38vw 34vh at 10% 0%,
@@ -928,7 +930,13 @@ html { overflow-x: hidden; }
 
 @media (max-width: 880px) {
   .workspace { grid-template-columns: 1fr; }
-  .aside { border-left: 0; border-top: 1px solid var(--line); }
+  /* Bottom padding clears the fixed sticky Teleprompter bar so the last
+     items in the aside (Batch Export, etc.) stay tappable instead of
+     sitting under the bar. Respects iOS safe area. */
+  .aside {
+    border-left: 0; border-top: 1px solid var(--line);
+    padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+  }
   .block .notes { grid-template-columns: 1fr; }
 
   /* Collapsed nav: row 1 is just the wordmark + a toggle, row 2 is the
