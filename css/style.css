@@ -864,7 +864,23 @@ html[data-chrome="bw"] .stars i.on { color: var(--ink); }
   .lp-feature, .lp-leave { grid-template-columns: 1fr; }
   .lp-foot-main { flex-direction: column; gap: 28px; }
   .lp-foot-contact { text-align: left; }
+
+  /* Landing nav had no mobile rule — wordmark + 3-button theme seg + Privacy
+     + long CTA cannot fit a phone, so the CTA wrapped inside its pill and
+     the theme seg squished to "Da". Drop the theme segment on mobile (the
+     setting persists from desktop / in-app), shrink padding, allow wrap so
+     items never overlap, and let the CTA breathe at its own width. */
+  .lp-nav {
+    padding: 16px 5vw; gap: 12px; flex-wrap: wrap;
+  }
+  .lp-nav .lp-theme { display: none; }
+  .lp-nav .btn-primary { padding: 9px 14px; font-size: 13px; }
 }
+
+/* Belt-and-braces: kill any rogue horizontal scroll on the landing. The
+   .lp body already sets overflow-x:hidden, but a fixed canvas or any
+   ancestor without it can still let a wide child force the document wide. */
+html { overflow-x: hidden; }
 
 .legal { max-width: 720px; margin: 0 auto; padding: 50px 24px 80px; }
 .legal h1 { font-size: 30px; }
