@@ -558,7 +558,10 @@ html[data-chrome="bw"] .stars i.on { color: var(--ink); }
     radial-gradient(30vw 36vh at 84% 88%,
       color-mix(in srgb, var(--tt-cyan) 12%, transparent), transparent 64%);
 }
-.lp > * { position: relative; z-index: 1; }
+/* Lift landing content above the canvas/wash z-index:0 layers — but DO
+   NOT touch the consent banner, which must stay position:fixed even when
+   it is a direct child of body.lp. */
+.lp > *:not(.consent) { position: relative; z-index: 1; }
 
 .lp-textlink {
   color: var(--ink-2); text-decoration: underline;
