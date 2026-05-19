@@ -95,6 +95,25 @@
 })();
 
 
+// Wash parallax — the big watercolor blooms (.lp::after) are the most
+// visible background layer. Without this they're bolted to the viewport
+// and read as "stuck" while everything else scrolls. Publish a scroll-
+// driven y-offset as a CSS custom property; CSS applies a translate3d for
+// GPU-cheap motion. Reduced motion = nothing runs, wash stays fixed.
+(function () {
+  if (!document.querySelector('.lp')) return;
+  var reduce = window.matchMedia &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) return;
+  var FACTOR = 0.25, root = document.documentElement, raf = 0, latest = 0;
+  function tick() { raf = 0; root.style.setProperty('--lp-bg-y', (-latest * FACTOR) + 'px'); }
+  addEventListener('scroll', function () {
+    latest = window.scrollY || window.pageYOffset || 0;
+    if (!raf) raf = requestAnimationFrame(tick);
+  }, { passive: true });
+})();
+
+
 // Dot field — the background speckle, drawn on canvas so individual dots
 // can light up. Base grid keeps the edge-bright / center-faint falloff of
 // the CSS fallback; on top, 2-3 dots at a time glow in random site-palette

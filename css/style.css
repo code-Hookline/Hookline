@@ -550,6 +550,10 @@ html[data-chrome="bw"] .stars i.on { color: var(--ink); }
 .lp::after {
   content: ""; position: fixed; inset: -10vmax; z-index: 0;
   pointer-events: none; filter: blur(60px) saturate(1.05);
+  /* Parallax: JS publishes --lp-bg-y on scroll. translate3d to keep this
+     on a GPU layer so the heavy blur doesn't repaint every frame. */
+  transform: translate3d(0, var(--lp-bg-y, 0), 0);
+  will-change: transform;
   background:
     radial-gradient(38vw 34vh at 10% 0%,
       color-mix(in srgb, var(--tt-pink) 30%, transparent), transparent 60%),
