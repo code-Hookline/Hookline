@@ -112,10 +112,10 @@
   host.insertBefore(wash, host.firstChild);
   host.classList.add('has-wash');
 
-  var reduce = window.matchMedia &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduce) return;
-
+  // Scroll-tied transforms only fire from user gesture (no autonomous
+  // motion), so they are NOT gated by prefers-reduced-motion — the strict
+  // bail is what made the wash look "fixed" for any visitor with iOS
+  // Reduce Motion on. Autonomous loops (twinkles, count-ups) stay gated.
   var FACTOR = 0.3, raf = 0, latest = 0;
   function tick() {
     raf = 0;
@@ -138,9 +138,13 @@
   var canvas = document.getElementById('dotfield');
   if (!canvas || !canvas.getContext) return;
 
+  // Reduced motion ONLY suppresses the autonomous twinkle spawn loop —
+  // the dot grid still renders and still scroll-parallaxes (scroll is a
+  // user gesture, not autonomous motion). Previously the whole IIFE bailed
+  // here, which is why "Reduce Motion = on" devices saw the static CSS
+  // ::before fallback that never moves.
   var reduce = window.matchMedia &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduce) return;
 
   var ctx = canvas.getContext('2d');
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -289,11 +293,34 @@
 
   document.querySelector('.lp').classList.add('has-dots');
   addEventListener('resize', resize, { passive: true });
+  addEventListener('hookline:theme', function () {
+    readTheme(); buildBase(); if (reduce) paintOnce();
+  });
+  resize();
+
+  // Two paint strategies. Normal: rAF loop drives twinkle animation +
+  // parallax every frame. Reduced-motion: NO autonomous loop, NO twinkles
+  // — repaint only when the user scrolls (and on init/resize). Same look
+  // for the static dots, parallax preserved, zero idle CPU.
+  var pending = 0;
+  function paintOnce() {
+    pending = 0;
+    ctx.clearRect(0, 0, w, h);
+    var sy = -(scrollY * dpr * PARALLAX);
+    var off = ((sy % tileH) + tileH) % tileH;
+    var drawY = off - tileH;
+    ctx.drawImage(base, 0, drawY);
+    ctx.drawImage(base, 0, drawY + tileH);
+  }
   addEventListener('scroll', function () {
     scrollY = window.scrollY || window.pageYOffset || 0;
+    if (reduce && !pending) pending = requestAnimationFrame(paintOnce);
   }, { passive: true });
-  addEventListener('hookline:theme', function () { readTheme(); buildBase(); });
-  resize();
-  schedule();
-  requestAnimationFrame(frame);
+
+  if (reduce) {
+    paintOnce();
+  } else {
+    schedule();
+    requestAnimationFrame(frame);
+  }
 })();
