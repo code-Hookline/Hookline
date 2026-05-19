@@ -7,6 +7,10 @@
    html[data-chrome="bw"] = Light mode (the chrome value stays "bw" for
                             stored-settings compatibility). */
 :root {
+  /* Tells the browser to render native UI (select chevrons, scrollbars,
+     focus rings) in the dark variant — otherwise the default <select>
+     arrow renders as a black system glyph that disappears on dark bg. */
+  color-scheme: dark;
   --bg: #0b0b0e;
   --surface: #16161a;
   --surface-2: #202026;
@@ -44,6 +48,7 @@
 /* Light mode — the same brand, on a light ground. Cyan/pink accents are
    deepened so they read on white; block colors stay full color. */
 html[data-chrome="bw"] {
+  color-scheme: light;
   --bg: #f4f4f6;
   --surface: #ffffff;
   --surface-2: #ececed;
@@ -71,6 +76,7 @@ html[data-chrome="bw"] {
 /* Print mode — a vintage red/cream/black linocut. Two-tone: vermilion as
    the primary accent, print-black as the secondary, on aged paper. */
 html[data-chrome="print"] {
+  color-scheme: light;
   --bg: #e7d4af;              /* aged cream paper */
   --surface: #efe3c6;         /* lighter paper */
   --surface-2: #dcc79c;       /* tan */
@@ -946,6 +952,18 @@ html { overflow-x: hidden; }
   .tb-drawer .seg { width: 100%; }
   .tb-drawer .seg button { flex: 1; }
 
+  /* Block card had 8+ inline items in one flex row with no wrap and no
+     shrink — they overflowed the viewport and pushed horizontal scroll on
+     the whole page. Allow wrap, shrink the selects, and drop the redundant
+     type label (the colored left border already encodes the type, and the
+     type select shows the same name). Tighter card padding too. */
+  .builder { padding: 18px 14px 100px; }
+  .block { padding: 12px 12px; }
+  .block-head { flex-wrap: wrap; row-gap: 6px; }
+  .block-head .block-type { display: none; }
+  .block-head select { min-width: 0; flex: 1 1 auto; max-width: 50%; }
+  .block .ico { padding: 4px 7px; }
+
   /* Script field dominates; private notes collapse behind a toggle. */
   .block textarea.script { font-size: 17px; min-height: 104px; }
   .notes-toggle { display: inline-flex; align-self: flex-start; margin-top: 8px; }
@@ -955,6 +973,12 @@ html { overflow-x: hidden; }
 
   /* Frame is decorative — reclaim the canvas on a phone. */
   .frame-sec { display: none; }
+
+  /* The sticky bar at the bottom carries the primary export; the in-aside
+     duplicate is just visual noise on a phone. Hide it. The font selector
+     and other exports (director brief, shot list, copy, caption, batch)
+     stay accessible in the aside Export section. */
+  #exTele { display: none; }
 
   /* The export is the reason a creator opens this on a phone before
      filming — keep it one tap away, not a scroll past the whole script. */
