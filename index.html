@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en" data-chrome="brand">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hookline — script your short-form video in blocks</title>
+<meta name="description" content="Script your short-form video as timed blocks. Auto-times to your real speaking pace. Export a teleprompter PDF and a director's brief. Your scripts stay in your browser.">
+<link rel="canonical" href="https://hookline.app/">
+<meta property="og:title" content="Hookline — script your short-form video in blocks">
+<meta property="og:description" content="Script your short-form video. Time it automatically. Ship it fast.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://hookline.app/">
+<meta property="og:image" content="https://hookline.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Hookline — script your short-form video in blocks">
+<meta name="twitter:description" content="Script your short-form video. Time it automatically. Ship it fast.">
+<meta name="twitter:image" content="https://hookline.app/og-image.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="shortcut icon" href="favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-icon-180x180.png">
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="css/style.css">
+<script>try{var c=localStorage.getItem('hookline-chrome');if(c)document.documentElement.setAttribute('data-chrome',c);}catch(e){}</script>
+</head>
+<body class="lp">
+<canvas id="dotfield" aria-hidden="true"></canvas>
+
+<nav class="lp-nav">
+  <a class="wordmark" href="index.html"><img class="mk" src="favicon-96x96.png" alt="" width="20" height="20"> Hookline</a>
+  <span class="grow"></span>
+  <div class="seg lp-theme" id="lpTheme" role="group" aria-label="Color theme">
+    <button type="button" data-chrome="brand">Dark</button>
+    <button type="button" data-chrome="bw">Light</button>
+    <button type="button" data-chrome="print">Print</button>
+  </div>
+  <a class="lp-navlink" href="privacy.html">Privacy</a>
+  <a class="btn btn-primary" href="app.html">Start scripting &mdash; no account</a>
+</nav>
+
+<header class="lp-hero">
+  <div class="lp-hero-copy">
+    <p class="lp-eyebrow">For creators who script and film their own short-form video</p>
+    <h1>A TikTok is not a paragraph. It is a timeline.</h1>
+    <p class="lede">Build your script as typed blocks &mdash; hook, problem,
+    bridge, demo, CTA. Hookline times every block to <em>your</em> real
+    speaking pace and exports a teleprompter the moment you stop typing
+    &mdash; at your desk, before you pick up the camera.</p>
+    <div class="lp-cta">
+      <a class="btn btn-primary" href="app.html">Start scripting &mdash; no account</a>
+    </div>
+    <p class="lp-microline">No sign-up &middot; nothing uploads &middot; works offline &mdash;
+    <a class="lp-textlink" href="privacy.html">how your data stays yours</a></p>
+  </div>
+
+  <div class="lp-preview" aria-hidden="true">
+    <div class="lp-pv-bar">
+      <span class="lp-pv-dot"></span><span class="lp-pv-dot"></span><span class="lp-pv-dot"></span>
+      <span class="lp-pv-name">cold-brew-launch.script</span>
+    </div>
+    <div class="lp-pv-body">
+      <div class="lp-pv-tags">
+        <span class="lp-pv-tag">TikTok</span>
+        <span class="lp-pv-tag">Talking head</span>
+        <span class="lp-pv-tag">Target 0:45</span>
+      </div>
+      <div class="lp-pv-block" style="--bt:var(--b-hook)">
+        <div class="lp-pv-meta"><b>Hook</b><span>3.1s</span></div>
+        <p>You have been making cold brew wrong this whole time.</p>
+      </div>
+      <div class="lp-pv-block" style="--bt:var(--b-problem)">
+        <div class="lp-pv-meta"><b>Problem</b><span>7.4s</span></div>
+        <p>Bitter, watery, and it took twelve hours &mdash; here is why.</p>
+      </div>
+      <div class="lp-pv-block" style="--bt:var(--b-demo)">
+        <div class="lp-pv-meta"><b>Demo</b><span>22.0s</span></div>
+        <p>Coarse grind, cold water, this exact ratio &hellip;</p>
+      </div>
+      <div class="lp-pv-block" style="--bt:var(--b-cta)">
+        <div class="lp-pv-meta"><b>CTA</b><span>4.5s</span></div>
+        <p>Save this before your next grocery run.</p>
+      </div>
+      <div class="lp-pv-timeline">
+        <span style="flex:3.1;background:var(--b-hook)"></span>
+        <span style="flex:7.4;background:var(--b-problem)"></span>
+        <span style="flex:22;background:var(--b-demo)"></span>
+        <span style="flex:4.5;background:var(--b-cta)"></span>
+      </div>
+      <div class="lp-pv-readout"><b>0:37</b> of 0:45 target &middot; paced at your 142 wpm</div>
+    </div>
+  </div>
+</header>
+
+<section class="lp-strip" aria-label="What you get">
+  <div class="lp-stat"><b>8 block types</b><span>hook, problem, bridge, demo, proof, objection, CTA, transition</span></div>
+  <div class="lp-stat"><b>90 hooks</b><span>proven opening frameworks in the swipe file on day one</span></div>
+  <div class="lp-stat"><b>No servers, no accounts</b><span>zero uploads to us &mdash; your scripts go nowhere you don't send them yourself</span></div>
+</section>
+
+<section class="lp-sec">
+  <p class="kicker">How it works</p>
+  <h2 class="lp-h2">Three steps. No submit button.</h2>
+  <div class="lp-steps">
+    <div class="lp-step">
+      <span class="lp-step-n">1</span>
+      <h3>Calibrate your pace once</h3>
+      <p>Read a short paragraph out loud. Hookline measures your real words
+      per minute for three delivery styles &mdash; conversational, energetic,
+      slow.</p>
+    </div>
+    <div class="lp-step">
+      <span class="lp-step-n">2</span>
+      <h3>Write in blocks</h3>
+      <p>Stack typed blocks and write the words. The timeline re-times every
+      block live against your calibrated pace as you type &mdash; no generic
+      averages.</p>
+    </div>
+    <div class="lp-step">
+      <span class="lp-step-n">3</span>
+      <h3>Export and shoot</h3>
+      <p>Teleprompter PDF, director's brief, shot list &mdash; or batch-ZIP a
+      whole campaign. Private notes are stripped from every export.</p>
+    </div>
+  </div>
+</section>
+
+<section class="lp-sec">
+  <p class="kicker">Why creators stay</p>
+  <div class="lp-feature">
+    <div class="lp-card lp-card-lead" style="border-left-color:var(--b-hook)">
+      <h3>It times to your real voice</h3>
+      <p>A 40-second script reads back as <em>0:40 at your pace</em> &mdash;
+      not at a flat 130 wpm someone averaged. That is the instant the tool
+      stops feeling generic and starts feeling built for you. Most
+      teleprompters guess. Hookline measured you.</p>
+    </div>
+    <div class="lp-feature-col">
+      <div class="lp-card">
+        <h3>Your swipe file compounds</h3>
+        <p>Rate your best hooks, save the frameworks that win in your niche.
+        After 40 saved hooks the blank page is gone for good.</p>
+      </div>
+      <div class="lp-card">
+        <h3>Batch your filming day</h3>
+        <p>Write a week of videos, batch-export every teleprompter as one
+        ZIP, and shoot them all in a single sitting &mdash; not one at a
+        time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="lp-sec">
+  <p class="kicker">What we deliberately leave out</p>
+  <div class="lp-leave">
+    <div class="lp-leave-item">
+      <h3>No AI script generation</h3>
+      <p>A thinking tool, not a content farm. You write the words; Hookline
+      structures and times them.</p>
+    </div>
+    <div class="lp-leave-item">
+      <h3>No video editing</h3>
+      <p>Pre-production only. It ends when you walk in front of the camera
+      and feeds whatever editor comes next.</p>
+    </div>
+    <div class="lp-leave-item">
+      <h3>No cloud, no account</h3>
+      <p>IndexedDB is the database; the device is the server. Your scripts
+      never live on someone else's machine.</p>
+    </div>
+    <div class="lp-leave-item">
+      <h3>No platform integrations</h3>
+      <p>No pulls from TikTok, Instagram, or YouTube. We track creative
+      patterns &mdash; never platform metrics.</p>
+    </div>
+  </div>
+</section>
+
+<section class="lp-name" aria-label="Start">
+  <p class="kicker">The next time you reshoot</p>
+  <p>You will write the script anyway &mdash; in a notes app, eyeballing the
+  length, then <em>reshooting because it ran fifteen seconds long</em>. Write
+  it once here, timed to your voice, and walk to the camera with the
+  teleprompter already done.</p>
+  <a class="btn btn-primary" href="app.html">Start scripting &mdash; no account</a>
+</section>
+
+<footer class="lp-foot">
+  <div class="lp-foot-main">
+    <div class="lp-foot-brand">
+      <a class="wordmark" href="index.html"><img class="mk" src="favicon-96x96.png" alt="" width="20" height="20"> Hookline</a>
+      <p>Pre-production for short-form video. Your scripts live in this
+      browser and stay until you remove them &mdash; export anytime to keep
+      copies you own.</p>
+    </div>
+    <div class="lp-foot-contact">
+      <p class="lp-foot-h">Missing a feature, hit a bug, or just want to chat?</p>
+      <a id="contact" class="btn" href="#">Get in touch</a>
+    </div>
+  </div>
+  <div class="lp-foot-bar">
+    <span class="lp-foot-promise">Your scripts are yours. No Hookline server holds them &mdash; nothing uploads to us, ever.</span>
+    <span class="grow"></span>
+    <a href="app.html">Workspace</a>
+    <a href="privacy.html">Privacy</a>
+    <span class="lp-foot-credit">Built by <a class="lp-foot-by" href="https://artivicolab.com" target="_blank" rel="noopener noreferrer">Artivicolab</a></span>
+  </div>
+</footer>
+
+<script src="js/landing.js"></script>
+<script src="js/analytics.js"></script>
+<script>
+  // Email protection: assembled at runtime, generic link text only.
+  (function () {
+    var u = 'artivicolab', d = 'gmail.com';
+    var a = document.getElementById('contact');
+    if (a) a.href = 'mailto:' + u + '@' + d +
+      '?subject=' + encodeURIComponent('Hookline — feedback');
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+Copyright (c) 2026 Hookline. All rights reserved.
+
+This source code is made publicly visible for transparency and reference.
+It is NOT licensed for use, copying, modification, distribution,
+sublicensing, or the creation of derivative works without express written
+permission from the copyright holder.
+
+Viewing this code grants no rights to use it. You may not run it as a
+service, fork it, adapt it, redistribute it in source or compiled form,
+incorporate any part of it into another project, or train machine-learning
+models on it without prior written consent.
+
+Third-party assets bundled in this repository retain their own licenses
+and are NOT covered by the restriction above:
+
+  - Atkinson Hyperlegible (js/vendor/atkinson.js, base64-embedded), by
+    the Braille Institute of America, Inc., licensed under the SIL Open
+    Font License 1.1. See js/vendor/Atkinson-Hyperlegible-OFL.txt for
+    the full text.
+
+For licensing inquiries, contact hello@hookline.app.

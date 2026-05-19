@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en" data-chrome="brand">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hookline — privacy &amp; your data</title>
+<meta name="description" content="What Hookline stores, where it lives, and how to erase it. Your scripts never leave your browser.">
+<link rel="canonical" href="https://hookline.app/privacy.html">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="shortcut icon" href="favicon.ico">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-icon-180x180.png">
+<link rel="stylesheet" href="css/style.css">
+<script>try{var c=localStorage.getItem('hookline-chrome');if(c)document.documentElement.setAttribute('data-chrome',c);}catch(e){}</script>
+</head>
+<body>
+<nav class="lp-nav">
+  <a class="wordmark" href="index.html"><img class="mk" src="favicon-96x96.png" alt="" width="20" height="20"> Hookline</a>
+  <span class="grow"></span>
+  <a class="btn" href="app.html">Workspace</a>
+</nav>
+
+<main class="legal">
+  <h1>Your scripts are yours</h1>
+  <p>Hookline is a static site. There is no Hookline server, no account, and
+  no database we control. Everything you write — scripts, blocks, notes,
+  your hook library, frameworks, CTAs, and calibration — is stored only in
+  your own browser using IndexedDB. It is never uploaded, never synced, and
+  never seen by us.</p>
+
+  <h2>What is stored locally</h2>
+  <ul>
+    <li>Your scripts and every block (text, tone, visual notes, director notes).</li>
+    <li>Your hook library, framework gallery, and CTA vault.</li>
+    <li>Your speaking-pace calibration and interface preferences.</li>
+  </ul>
+  <p>All of it lives in IndexedDB database <code>hookline</code> on this
+  device, in this browser profile. Clearing your browser data erases it.</p>
+
+  <h2>What leaves the browser</h2>
+  <p>Only what you explicitly export — a teleprompter PDF, a director's
+  brief, a CSV, a ZIP — and only to wherever you choose to save or send it.
+  Exports are generated in your browser; nothing is transmitted to us.</p>
+
+  <h2>Live sessions</h2>
+  <p>If you choose to start a live session, Hookline connects your browser
+  directly to one other person so you can co-edit a script together. The
+  connection is peer-to-peer and you start it deliberately: you generate a
+  session code and hand it to that person yourself. There is no Hookline
+  server in the middle, no signaling server, and no TURN relay &mdash; the
+  script reaches only the person you sent the code to, and never us. To
+  establish the link, each browser contacts a public STUN server (currently
+  Google&rsquo;s) for one purpose only: discovering its own reachable network
+  address. The STUN server learns that an address exists; it never receives
+  the data channel, never sees a single word of your script. The connection
+  is deliberately not persistent: there is no server holding it open, so if
+  it drops you simply start a new session. That impermanence is intentional
+  &mdash; nothing about a live session is stored, resumed, or sent to
+  Hookline.</p>
+
+  <h2>Analytics</h2>
+  <p>The site can load Google Analytics 4 to measure anonymous, aggregate
+  usage (page views, broad feature use). It is consent-gated: until you
+  accept the banner, no analytics code loads and no request is made. It
+  never has access to your script content — only pure-logic modules ever
+  touch that, and they make no network calls. You can decline and the app
+  works identically.</p>
+
+  <h2>No AI, no platform pulls</h2>
+  <p>Hookline does not generate text with AI and does not connect to TikTok,
+  Instagram, YouTube, or any platform API. There is nothing for your content
+  to be fed into.</p>
+
+  <h2>Contact</h2>
+  <p>Questions about this policy? <a id="contact" href="#">Get in touch</a>.</p>
+
+  <div class="danger">
+    <h2 style="margin-top:0">Erase everything on this device</h2>
+    <p>This permanently deletes every Hookline script, library entry, and
+    setting from this browser. It cannot be undone and there is no backup.</p>
+    <button class="btn btn-primary" id="wipe">Erase all Hookline data</button>
+    <p id="wipeMsg" style="margin-bottom:0"></p>
+  </div>
+</main>
+
+<script type="module">
+  import { wipeEverything } from './js/storage.js';
+  const btn = document.getElementById('wipe');
+  btn.addEventListener('click', async () => {
+    if (!confirm('Permanently erase all Hookline data on this device?')) return;
+    try {
+      await wipeEverything();
+      document.getElementById('wipeMsg').textContent =
+        'Done. Every local Hookline record has been erased.';
+      btn.disabled = true;
+    } catch (e) {
+      document.getElementById('wipeMsg').textContent =
+        'Could not complete the wipe — clear this site’s data from your browser settings.';
+    }
+  });
+
+  // Email protection: assembled at runtime, generic link text only.
+  const u = 'hello', d = 'hookline.app';
+  const a = document.getElementById('contact');
+  a.href = 'mailto:' + u + '@' + d;
+</script>
+<script src="js/analytics.js"></script>
+</body>
+</html>
