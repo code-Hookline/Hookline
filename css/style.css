@@ -484,16 +484,33 @@ html[data-chrome="bw"] .stars i.on { color: var(--ink); }
 
 /* ---- Consent banner --------------------------------------------------- */
 
+/* Edge-to-edge fixed footer — always visible, no scrolling required to
+   find it. Inner content is capped to 1180px on wide screens by an
+   auto-growing horizontal padding so it never looks lost at desktop width. */
 .consent {
-  position: fixed; left: 16px; right: 16px; bottom: 16px;
-  max-width: 720px; margin: 0 auto;
-  background: var(--surface); border: 1px solid var(--line-2);
-  border-radius: var(--radius); box-shadow: var(--shadow);
-  padding: 14px 18px; display: flex; gap: 14px; align-items: center;
+  position: fixed; left: 0; right: 0; bottom: 0;
+  background: var(--surface); border-top: 1px solid var(--line-2);
+  box-shadow: 0 -6px 24px rgba(0, 0, 0, .10);
+  padding: 14px max(18px, calc((100vw - 1180px) / 2));
+  display: flex; gap: 14px; align-items: center;
   flex-wrap: wrap; z-index: 60;
 }
-.consent-text { margin: 0; font-size: 13px; flex: 1; min-width: 220px; }
-.consent-actions { display: flex; gap: 8px; }
+.consent-text { margin: 0; font-size: 13px; flex: 1; min-width: 220px; line-height: 1.5; }
+.consent-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+/* Narrow screens: stack the text above right-aligned actions so the buttons
+   are anchored to the text block instead of floating beside it. Respect the
+   iOS safe area so the footer doesn't sit under the home-bar. */
+@media (max-width: 600px) {
+  .consent {
+    flex-direction: column; align-items: stretch; flex-wrap: nowrap;
+    padding: 14px 16px calc(14px + env(safe-area-inset-bottom, 0px));
+    gap: 12px;
+  }
+  .consent-text { min-width: 0; }
+  .consent-actions { justify-content: flex-end; }
+  .consent-actions .btn { padding: 9px 16px; font-size: 13px; }
+}
 
 /* ---- Landing ---------------------------------------------------------- */
 /* The landing now follows the site theme (Dark / Light / Print) through

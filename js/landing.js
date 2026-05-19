@@ -111,7 +111,11 @@
 
   var ctx = canvas.getContext('2d');
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
-  var GAP = 26, w = 0, h = 0, cols = 0, rows = 0;
+  var GAP = 26, w = 0, h = 0, cols = 0, rows = 0, tileH = 0;
+  // Parallax depth: background moves at this fraction of scroll speed. 0 =
+  // static (old behavior), 1 = locked to content. ~0.3 is the classic
+  // "background drifts behind you" feel without becoming distracting.
+  var PARALLAX = 0.3, scrollY = 0;
   var base = document.createElement('canvas');
   var bctx = base.getContext('2d');
 
@@ -152,8 +156,9 @@
   }
 
   function buildBase() {
-    base.width = w; base.height = h;
-    bctx.clearRect(0, 0, w, h);
+    // base.width / base.height are set in resize() to (w, tileH) so the
+    // parallax wrap is seamless. Don't reset them here.
+    bctx.clearRect(0, 0, w, tileH);
     for (var c = 0; c <= cols; c++) {
       var x = c * GAP * dpr;
       var nx = cols ? c / cols : 0;
@@ -194,6 +199,11 @@
     canvas.style.height = innerHeight + 'px';
     cols = Math.ceil(innerWidth / GAP);
     rows = Math.ceil(innerHeight / GAP);
+    // Snap the base tile to an exact whole-row height so parallax wrap is
+    // seamless — otherwise dots would jump at every cycle by the leftover
+    // fraction of a GAP.
+    tileH = rows * GAP * dpr;
+    base.width = w; base.height = tileH;
     buildBase();
   }
 
@@ -218,7 +228,14 @@
 
   function frame(now) {
     ctx.clearRect(0, 0, w, h);
-    ctx.drawImage(base, 0, 0);
+    // Parallax: shift the whole grid by a fraction of scrollY and tile the
+    // pre-rendered base vertically so the field appears to drift past the
+    // content at a slower speed. Two draws cover any wrap seam.
+    var sy = -(scrollY * dpr * PARALLAX);
+    var off = ((sy % tileH) + tileH) % tileH;
+    var drawY = off - tileH;                       // in [-tileH, 0)
+    ctx.drawImage(base, 0, drawY);
+    ctx.drawImage(base, 0, drawY + tileH);
     for (var i = twinkles.length - 1; i >= 0; i--) {
       var t = twinkles[i];
       var p = (now - t.born) / t.life;
@@ -228,9 +245,10 @@
       ctx.fillStyle = t.color;
       ctx.shadowColor = t.color;
       ctx.shadowBlur = 6 * dpr;
-      ctx.beginPath();
-      ctx.arc(t.x, t.y, 1.7 * dpr, 0, 6.2832);
-      ctx.fill();
+      // Pin the twinkle to its dot on the parallaxed grid; draw both wrap
+      // copies so it doesn't pop when the tile boundary crosses it.
+      ctx.beginPath(); ctx.arc(t.x, t.y + drawY, 1.7 * dpr, 0, 6.2832); ctx.fill();
+      ctx.beginPath(); ctx.arc(t.x, t.y + drawY + tileH, 1.7 * dpr, 0, 6.2832); ctx.fill();
     }
     ctx.globalAlpha = 1; ctx.shadowBlur = 0;
     requestAnimationFrame(frame);
@@ -238,6 +256,9 @@
 
   document.querySelector('.lp').classList.add('has-dots');
   addEventListener('resize', resize, { passive: true });
+  addEventListener('scroll', function () {
+    scrollY = window.scrollY || window.pageYOffset || 0;
+  }, { passive: true });
   addEventListener('hookline:theme', function () { readTheme(); buildBase(); });
   resize();
   schedule();
